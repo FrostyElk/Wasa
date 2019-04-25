@@ -4,10 +4,10 @@
 """
 
 from flask import Flask
-from flask_session import Session
+from flask_bootstrap import Bootstrap
+from flask_sessionstore import Session
 
 from config import Config
-from flask_bootstrap import Bootstrap
 from .frontend import frontend
 from .nav import nav
 

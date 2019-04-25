@@ -33,9 +33,9 @@
                     <div class="col-sm-12">
                         <div class="panel panel-primary">
                             <div class="panel-heading">Remote Console</div>
-                            <div class="panel-body" style="overflow-y: auto; height: 600px; background: #fffbe0;">
+                            <div class="panel-body" style="overflow-y: auto; height: 500px; background: #fffbe0;">
 
-                                {% for res_line in session['rcon_cmd_results'] %}
+                                {% for res_line in session_data['rcon_cmd_results'] %}
                                     {{ res_line }}
                                     <br>
                                 {% endfor %}
@@ -60,7 +60,7 @@
                         <div class="panel-heading">Server Information</div>
 
                         <div class="panel-body">
-                            {% with server_info = session['server_info_json'] %}
+                            {% with server_info = session_data['server_info_json'] %}
                                 <div class="row">
                                     <div class="col-sm-4">Server Name:</div>
                                     <div class="col-sm-8">{{ server_info['server_name'] }}</div>
@@ -68,7 +68,7 @@
 
                                 <div class="row">
                                     <div class="col-sm-4">Server Adress:</div>
-                                    <div class="col-sm-8">{{ session['rcon_session'].ip_address }}:{{ session['rcon_session'].rcon_port }}</div>
+                                    <div class="col-sm-8">{{ session_data['rcon_session'].ip_address }}:{{ session_data['rcon_session'].rcon_port }}</div>
                                 </div>
 
                                 <div class="row">

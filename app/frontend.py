@@ -5,7 +5,7 @@
 
 import json
 
-from flask import Blueprint, render_template, flash, redirect, url_for, session
+from flask import Blueprint, render_template, flash, redirect, url_for, session, request
 from flask_nav.elements import Navbar, View, Subgroup, Link
 
 from .connection import RconSession
@@ -18,9 +18,9 @@ nav.register_element('frontend_top', Navbar(
     View('WarFallen Server Administration', '.index'),
     View('RCON', '.rcon_auth'),
     Subgroup(
-        'Links'
-        , Link('WarFallen Home', 'https://www.warfallen.com/')
-        , Link('WarFallen Steam', 'https://store.steampowered.com/app/672040/WarFallen/')
+        'Links',
+        Link('WarFallen Home', 'https://www.warfallen.com/'),
+        Link('WarFallen Steam', 'https://store.steampowered.com/app/672040/WarFallen/')
     )
 ))
 
@@ -41,9 +41,18 @@ def index():
 
 @frontend.route('/rcon/', methods=('GET', 'POST'))
 def rcon():
-    rcon_session = session['rcon_session']
+    rtok = request.args.get('rtok')
+    if not rtok or rtok not in session:
+        return redirect(url_for('.rcon_auth'))
 
-    if not rcon_session or rcon_session.valid is False:
+    token_session = session[rtok]
+
+    if not token_session or 'rcon_session' not in token_session:
+        return redirect(url_for('.rcon_auth'))
+
+    rcon_session = token_session['rcon_session']
+
+    if not rcon_session:
         return redirect(url_for('.rcon_auth'))
 
     rcom_cmd_line_form = RconCmdInput()
@@ -51,44 +60,42 @@ def rcon():
     match_action_form = MatchActionButtons()
 
     if rcom_cmd_line_form.is_submitted() and rcom_cmd_line_form.submit_rcon_cmd.data:
-
-        if session['rcon_session'].execute(rcom_cmd_line_form.cmd_line.data):
-            session['rcon_session'].add_session_cmd_result()
+        if token_session['rcon_session'].execute(rcom_cmd_line_form.cmd_line.data):
+            token_session['rcon_session'].add_session_cmd_result(token_session)
         else:
             flash('Connection failed to {}:{}'.format(rcon_session.ip_address, rcon_session.rcon_port))
-            session.pop('rcon_session')
+            token_session.pop('rcon_session')
             return redirect(url_for('.rcon_auth'))
 
     if server_refresh_form.is_submitted() and server_refresh_form.refresh_server_submit.data:
-
         if rcon_session.execute('status json'):
-            session['server_info_json'] = json.loads(rcon_session.last_result)
-            return redirect(url_for('.rcon'))
+            token_session['server_info_json'] = json.loads(rcon_session.last_result)
+            redir_url = url_for('.rcon') + '?rtok=' + rtok
+            return redirect(redir_url)
         else:
             flash('Connection failed to {}:{}'.format(rcon_session.ip_address, rcon_session.rcon_port))
-            session.pop('rcon_session')
+            token_session.pop('rcon_session')
             return redirect(url_for('.rcon_auth'))
 
     if match_action_form.is_submitted() and match_action_form.submit_restart_match.data:
-
         if rcon_session.execute('RestartGame'):
-            session['rcon_session'].add_session_cmd_result()
+            token_session['rcon_session'].add_session_cmd_result(token_session)
         else:
             flash('Connection failed to {}:{}'.format(rcon_session.ip_address, rcon_session.rcon_port))
-            session.pop('rcon_session')
+            token_session.pop('rcon_session')
             return redirect(url_for('.rcon_auth'))
 
     if match_action_form.is_submitted() and match_action_form.submit_kick_all_bots.data:
-
         if rcon_session.execute('BotKick'):
-            session['rcon_session'].add_session_cmd_result()
+            rcon_session.add_session_cmd_result(token_session)
         else:
             flash('Connection failed to {}:{}'.format(rcon_session.ip_address, rcon_session.rcon_port))
-            session.pop('rcon_session')
+            token_session.pop('rcon_session')
             return redirect(url_for('.rcon_auth'))
 
     return render_template('rcon.html', rcom_cmd_line_form=rcom_cmd_line_form,
-                           server_refresh_form=server_refresh_form, match_action_form=match_action_form)
+                           server_refresh_form=server_refresh_form, match_action_form=match_action_form,
+                           session_data=token_session)
 
 
 @frontend.route('/rcon-auth/', methods=('GET', 'POST'))
@@ -99,16 +106,21 @@ def rcon_auth():
         rcon_session = RconSession(form.ip_address.data, form.rcon_port.data, form.password.data)
 
         if rcon_session.execute('status json'):
-            session['rcon_session'] = rcon_session
-            session['server_info_json'] = json.loads(rcon_session.last_result)
-            session['rcon_cmd_results'] = []
+            rcon_token = rcon_session.rcon_token
 
-            if session['server_info_json']['success']:
-                return redirect(url_for('.rcon'))
+            rcon_last_result_json = json.loads(rcon_session.last_result)
+
+            if rcon_last_result_json['success']:
+                session[rcon_token] = dict()
+                session[rcon_token]['rcon_session'] = rcon_session
+                session[rcon_token]['server_info_json'] = rcon_last_result_json
+                session[rcon_token]['rcon_cmd_results'] = []
+                redir_url = url_for('.rcon') + '?rtok=' + rcon_token
+                return redirect(redir_url)
             else:
-                session.pop('rcon_session')
+                session[rcon_token].pop('rcon_session')
                 flash('Connection failed to {}:{}. Reason: {}'.format(form.ip_address.data, form.rcon_port.data,
-                                                                      session['server_info_json']['error']))
+                                                                      session[rcon_token]['server_info_json']['error']))
         else:
             print(rcon_session.last_exception)
             flash('Connection failed to {}:{}'.format(form.ip_address.data, form.rcon_port.data))

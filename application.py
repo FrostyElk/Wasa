@@ -11,7 +11,7 @@ from app import create_app
 
 sys.path.append(os.path.dirname(__name__))
 
-# For Electric Beanstalk
+# For Elastic Beanstalk
 application = create_app()
 
 if __name__ == '__main__':

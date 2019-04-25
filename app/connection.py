@@ -4,8 +4,9 @@
 """
 
 import json
+import secrets
+import socket
 
-from flask import session
 from valve.rcon import RCONError, RCON
 
 
@@ -20,6 +21,7 @@ class RconSession(object):
         self.last_command = ''
         self.last_exception = ''
         self.valid = False
+        self.rcon_token = self.ip_address + '_' + str(self.rcon_port) + '_' + secrets.token_urlsafe(16)
 
     def execute(self, command):
         rcon_connection = RCON((self.ip_address, self.rcon_port), self.password)
@@ -31,21 +33,21 @@ class RconSession(object):
             rcon_connection.close()
             self.valid = True
             return True
-        except (RCONError, ConnectionRefusedError, TimeoutError)as e:
+        except (RCONError, ConnectionRefusedError, TimeoutError, socket.gaierror)as e:
             self.last_exception = e
             rcon_connection.close()
             self.valid = False
             return False
 
-    def add_session_cmd_result(self):
+    def add_session_cmd_result(self, token_session):
         split_result = self.last_result.split('\n')
         command = 'RCON> ' + self.last_command
 
-        if 'rcon_cmd_results' not in session:
-            session['rcon_cmd_results'] = []
+        if 'rcon_cmd_results' not in token_session:
+            token_session['rcon_cmd_results'] = []
 
-        session['rcon_cmd_results'].append(command)
-        session['rcon_cmd_results'].extend(split_result)
+        token_session['rcon_cmd_results'].append(command)
+        token_session['rcon_cmd_results'].extend(split_result)
 
 
 class ServerConnection(object):
