@@ -11,5 +11,5 @@ class Config(object):
 
     SESSION_TYPE = 'filesystem'
     DEBUG = True
-    BOOTSTRAP_SERVE_LOCAL = True
+    BOOTSTRAP_SERVE_LOCAL = False
     SECRET_KEY = secrets.token_urlsafe(24)
