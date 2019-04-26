@@ -33,7 +33,7 @@ class RconSession(object):
             rcon_connection.close()
             self.valid = True
             return True
-        except (RCONError, ConnectionRefusedError, TimeoutError, socket.gaierror)as e:
+        except (RCONError, OSError, IOError, EnvironmentError)as e:
             self.last_exception = e
             rcon_connection.close()
             self.valid = False
