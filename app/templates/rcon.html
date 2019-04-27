@@ -1,7 +1,5 @@
 {%- extends "base.html" %}
 
-{% import "bootstrap/wtf.html" as wtf %}
-
 {% block content %}
     <div class="container-fluid">
         {%- with messages = get_flashed_messages(with_categories=True) %}

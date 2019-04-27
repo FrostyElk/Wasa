@@ -11,6 +11,7 @@ from app import create_app
 
 sys.path.append(os.path.dirname(__name__))
 
+
 # For Elastic Beanstalk
 application = create_app()
 
