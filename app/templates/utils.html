@@ -20,6 +20,7 @@
         {% for cat, msg in messages %}
             <div class="alert alert-
 
+
                     {{ transform.get(cat.lower(), default_category or cat) }}{% if dismissible %} alert-dismissible{% endif %}"
                  role="alert">
                 {% if dismissible %}

@@ -1,29 +1,62 @@
 {%- extends "base.html" %}
 
 {% import "utils.html" as utils %}
-{% import "bootstrap/wtf.html" as wtf %}
 
 {% block content %}
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-7">
+            <div class="col-sm-7">
                 <img src="{{ url_for('static', filename='img/warfallen_logo_1024x1024.png') }}" class="img-responsive"
                      alt="WarFallen RCON Authentication">
             </div>
 
-            <div class="col-md-5">
-                {%- with messages = get_flashed_messages(with_categories=True) %}
-                    {%- if messages %}
+            <div class="col-sm-5">
+
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        {%- with messages = get_flashed_messages(with_categories=True) %}
+                            {%- if messages %}
+                                <div class="alert alert-danger" role="alert">
+                                    {{ utils.flashed_messages(messages) }}
+                                </div>
+                            {%- endif %}
+                        {%- endwith %}
+
                         <div class="row">
-                            <div class="col-md-12">
-                                {{ utils.flashed_messages(messages) }}
+                            <div class="col-sm-12">
+                                <h1>Authenticate Remote Console</h1>
                             </div>
                         </div>
-                    {%- endif %}
-                {%- endwith %}
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <form action="" method="post">
+                                    <div class="form-group">
+                                        {{ form.hidden_tag() }}
+                                        {{ form.ip_address.label }} <br>
+                                        {{ form.ip_address }}
+                                    </div>
 
-                <h1>Authenticate Remote Console</h1>
-                {{ wtf.quick_form(form) }}
+                                    <div class="form-group">
+                                        {{ form.hidden_tag() }}
+                                        {{ form.rcon_port.label }} <br>
+                                        {{ form.rcon_port }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ form.hidden_tag() }}
+                                        {{ form.password.label }} <br>
+                                        {{ form.password }}
+                                    </div>
+
+                                    {{ form.submit }}
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>

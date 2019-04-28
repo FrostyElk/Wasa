@@ -2,26 +2,33 @@
 
 {% import "utils.html" as utils %}
 
-{# We also set a default title, usually because we might forget to set one.
-   In our sample app, we will most likely just opt not to change it #}
 {% block title %}WarFallen Server Administrator{% endblock %}
 
-{# Then, inside the head block, we apply these. To not replace the header,
-   ``super()`` is used: #}
 {% block head %}
     {{ super() }}
 {%- endblock %}
 
-{# Adding our own CSS files is also done here. Check the documentation at
-   http://pythonhosted.org/Flask-Bootstrap/basic-usage.html#available-blocks
-   for an overview. #}
 {% block styles -%}
-    {{ super() }}  {# do not forget to call super or Bootstrap's own stylesheets
-                    will disappear! #}
+    {{ super() }}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/wasa.css') }}">
 {% endblock %}
 
-{# Finally, round things out with navigation #}
 {% block navbar %}
-    {{ nav.frontend_top.render() }}
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <a class="navbar-brand" href="{{ url_for('.index') }}">WarFallen Server Administration</a>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('.rcon_auth') }} ">RCON</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="https://www.warfallen.com/guides/#DedicatedServerGuide"
+                   target="_blank">Guide</a>
+            </li>
+        </ul>
+    </nav>
 {% endblock %}
+
+
+{% block body %}
+    {{ super() }}
+{%- endblock %}

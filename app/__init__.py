@@ -4,12 +4,10 @@
 """
 
 from flask import Flask
-from flask_bootstrap import Bootstrap
 from flask_sessionstore import Session
 
 from config import Config
 from .frontend import frontend
-from .nav import nav
 
 
 def create_app():
@@ -21,17 +19,11 @@ def create_app():
 
     app.config.from_object(Config)
 
-    # Install our Bootstrap extension
-    Bootstrap(app)
-
     Session(app)
 
     # Our application uses blueprints as well; these go well with the
     # application factory. We already imported the blueprint, now we just need
     # to register it:
     app.register_blueprint(frontend)
-
-    # We initialize the navigation as well
-    nav.init_app(app)
 
     return app

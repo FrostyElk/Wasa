@@ -5,7 +5,6 @@
 
 import json
 import secrets
-import socket
 
 from valve.rcon import RCONError, RCON
 
@@ -21,7 +20,7 @@ class RconSession(object):
         self.last_command = ''
         self.last_exception = ''
         self.valid = False
-        self.rcon_token = self.ip_address + '_' + str(self.rcon_port) + '_' + secrets.token_urlsafe(16)
+        self.rcon_token = self.ip_address + '_' + secrets.token_urlsafe(24)
 
     def execute(self, command):
         rcon_connection = RCON((self.ip_address, self.rcon_port), self.password)

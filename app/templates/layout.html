@@ -11,13 +11,13 @@
                 {%- endblock metas %}
 
                 {%- block styles %}
-                    <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+                    <!-- Bootstrap 4 CSS -->
+                    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
                 {%- endblock styles %}
             {%- endblock head %}
         </head>
         <body{% block body_attribs %}{% endblock body_attribs %}>
         {% block body -%}
-
             {% block navbar %}
             {%- endblock navbar %}
 
@@ -25,10 +25,15 @@
             {%- endblock content %}
 
             {% block scripts %}
-                <script src="{{ url_for('static', filename='js/jquery-3.4.0.min.js') }}"></script>
-                <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
-            {%- endblock scripts %}
+                <!-- jQuery library -->
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
+                <!-- Popper JS -->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+                <!-- Bootstrap 4 JS -->
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+            {%- endblock scripts %}
         {%- endblock body %}
         </body>
     {%- endblock html %}

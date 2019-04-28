@@ -6,23 +6,11 @@
 import json
 
 from flask import Blueprint, render_template, flash, redirect, url_for, session, request
-from flask_nav.elements import Navbar, View, Subgroup, Link
 
 from .connection import RconSession
 from .forms import RconAuthForm, RconCmdInput, RefreshServerInfo, MatchActionButtons
-from .nav import nav
 
 frontend = Blueprint('frontend', __name__)
-
-nav.register_element('frontend_top', Navbar(
-    View('WarFallen Server Administration', '.index'),
-    View('RCON', '.rcon_auth'),
-    Subgroup(
-        'Links',
-        Link('WarFallen Home', 'https://www.warfallen.com/'),
-        Link('WarFallen Steam', 'https://store.steampowered.com/app/672040/WarFallen/')
-    )
-))
 
 
 def add_session_result(result):

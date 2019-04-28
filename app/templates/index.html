@@ -7,7 +7,9 @@
    intact. #}
 {% block content %}
     <div class="container-fluid">
-        <img src="{{ url_for('static', filename='img/warfallen_logo_1920.png') }}" class="img-responsive"
-             alt="WarFallen Server Administration">
+        <div class="row">
+            <img src="{{ url_for('static', filename='img/warfallen_logo_1920.png') }}" class="img-responsive"
+                 alt="WarFallen Server Administration">
+        </div>
     </div>
 {%- endblock %}
