@@ -17,12 +17,20 @@
         <div class="row">
             <div class="col-sm-2">
                 <div class="card">
-                    <div class="card-header bg-info">Actions</div>
+                    <div class="card-header bg-info"><b>Actions</b></div>
                     <div class="card-body">
                         <form action="" method="post">
                             {{ match_action_form.hidden_tag() }}
-                            <div class="row">{{ match_action_form.submit_restart_match }}</div>
-                            <div class="row">{{ match_action_form.submit_kick_all_bots }}</div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    {{ match_action_form.submit_restart_match(class="btn btn-outline-primary btn-block") }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    {{ match_action_form.submit_kick_all_bots(class="btn btn-outline-primary btn-block") }}
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -33,7 +41,7 @@
                     <div class="col-sm-12">
 
                         <div class="card">
-                            <div class="card-header bg-primary">Remote Console</div>
+                            <div class="card-header bg-primary"><b>Remote Console</b></div>
 
                             <div class="card-body" style="overflow-y: auto; height: 500px; background: #fffbe0;">
                                 {% for res_line in session_data['rcon_cmd_results'] %}
@@ -45,8 +53,13 @@
                             <div class="card-footer">
                                 <form action="" method="post">
                                     {{ rcom_cmd_line_form.hidden_tag() }}
-                                    {{ rcom_cmd_line_form.submit_rcon_cmd }}
-                                    {{ rcom_cmd_line_form.cmd_line }}
+
+                                    <div class="input-group mb-3 input-group-sm">
+                                        <div class="input-group-prepend">
+                                            {{ rcom_cmd_line_form.submit_rcon_cmd(class="btn btn-primary") }}
+                                        </div>
+                                        {{ rcom_cmd_line_form.cmd_line(class="form-control") }}
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -58,7 +71,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="card">
-                            <div class="card-header bg-secondary">Server Information</div>
+                            <div class="card-header"><b>Server Information</b></div>
 
                             <div class="card-body">
                                 {% with server_info = session_data['server_info_json'] %}
@@ -143,7 +156,7 @@
                             <div class="card-footer">
                                 <form method="post">
                                     {{ server_refresh_form.hidden_tag() }}
-                                    {{ server_refresh_form.refresh_server_submit }}
+                                    {{ server_refresh_form.refresh_server_submit(class="btn btn-info") }}
                                 </form>
                             </div>
 

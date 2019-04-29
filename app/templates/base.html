@@ -6,6 +6,19 @@
 
 {% block head %}
     {{ super() }}
+    <link rel="icon" type="image/png"
+          href="{{ url_for('static', filename='img/warfallen_logo_icon192.jpg') }}">
+{%- endblock %}
+
+{% block metas %}
+    {{ super() }}
+    <meta name="Description"
+          content="WarFallen Server Administration. Remote Console (RCON) for WarFallen dedicated servers. Application to manage esport matches.">
+{%- endblock %}
+
+{% block html_attribs %}
+    {{ super() }}
+    lang=en
 {%- endblock %}
 
 {% block styles -%}
@@ -15,7 +28,13 @@
 
 {% block navbar %}
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <a class="navbar-brand" href="{{ url_for('.index') }}">
+            <img src="{{ url_for('static', filename='img/warfallen_logo_icon192.jpg' ) }}" alt="WarFallen"
+                 style="width:40px;">
+        </a>
+
         <a class="navbar-brand" href="{{ url_for('.index') }}">WarFallen Server Administration</a>
+
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('.rcon_auth') }} ">RCON</a>
