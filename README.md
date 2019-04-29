@@ -9,7 +9,7 @@ git archive -v -o wasa.zip --format=zip HEAD
 ```
 Upload and Deploy the zip.
 
-#Development
+# Development
 Setup the development environment with:
 ```
 pip install -r requirements.txt
