@@ -16,24 +16,63 @@
 
         <div class="row">
             <div class="col-sm-2">
-                <div class="card">
-                    <div class="card-header bg-info"><b>Actions</b></div>
-                    <div class="card-body">
-                        <form action="" method="post">
-                            {{ match_action_form.hidden_tag() }}
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    {{ match_action_form.submit_restart_match(class="btn btn-outline-primary btn-block") }}
-                                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <div class="card">
+                            <div class="card-header bg-info"><b>Actions</b></div>
+                            <div class="card-body">
+                                <form action="" method="post">
+                                    {{ match_action_form.hidden_tag() }}
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            {{ match_action_form.submit_restart_match(class="btn btn-outline-primary btn-block") }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            {{ match_action_form.submit_kick_all_bots(class="btn btn-outline-primary btn-block") }}
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            {{ match_action_form.submit_list_players(class="btn btn-outline-primary btn-block") }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            {{ match_action_form.submit_list_bans(class="btn btn-outline-primary btn-block") }}
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    {{ match_action_form.submit_kick_all_bots(class="btn btn-outline-primary btn-block") }}
-                                </div>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
+
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header bg-info"><b>Useful Commands</b></div>
+                            <div class="card-body">
+                                Changelevel {Map}<br>
+                                Say {Admin message}<br>
+                                MapRotation {Map+Map}<br>
+                                BotAdd/BotKick/BotKill<br>
+                                BanPlayer {SteamId64}<br>
+                                UnBanPlayer {SteamId64}<br>
+                                Autofillbots {bots}<br>
+                                ServerName {New Name}<br>
+                                ServerMOTD {MOTD}<br>
+                                ServerPassword {pw}<br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             <div class="col-sm-5">
@@ -76,22 +115,22 @@
                             <div class="card-body">
                                 {% with server_info = session_data['server_info_json'] %}
                                     <div class="row">
-                                        <div class="col-sm-4">Server Name:</div>
+                                        <div class="col-sm-4">Name:</div>
                                         <div class="col-sm-8">{{ server_info['server_name'] }}</div>
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-sm-4">Server Adress:</div>
+                                        <div class="col-sm-4">Address:</div>
                                         <div class="col-sm-8">{{ session_data['rcon_session'].ip_address }}:{{ session_data['rcon_session'].rcon_port }}</div>
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-sm-4">Server MOTD:</div>
+                                        <div class="col-sm-4">MOTD:</div>
                                         <div class="col-sm-8">{{ server_info['server_motd'] }}</div>
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-sm-4">Server Password:</div>
+                                        <div class="col-sm-4">Password:</div>
                                         <div class="col-sm-8">{{ server_info['server_password'] }}</div>
                                     </div>
 
@@ -121,7 +160,7 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-sm-4">Remaining Time:</div>
+                                        <div class="col-sm-4">Time left:</div>
                                         <div class="col-sm-8">{{ server_info['time_remaining'] }} seconds</div>
                                     </div>
 
@@ -136,12 +175,12 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-sm-4">Server Stats:</div>
+                                        <div class="col-sm-4">Health:</div>
                                         <div class="col-sm-8">{{ server_info['server_stats'] }}</div>
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-sm-4">Server Build:</div>
+                                        <div class="col-sm-4">Build:</div>
                                         <div class="col-sm-8">{{ server_info['build'] }}</div>
                                     </div>
 

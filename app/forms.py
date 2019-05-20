@@ -28,3 +28,5 @@ class RefreshServerInfo(FlaskForm):
 class MatchActionButtons(FlaskForm):
     submit_restart_match = SubmitField(u'Restart Game')
     submit_kick_all_bots = SubmitField(u'Kick All Bots')
+    submit_list_players = SubmitField(u'List Players')
+    submit_list_bans = SubmitField(u'List Bans')

@@ -81,6 +81,22 @@ def rcon():
             token_session.pop('rcon_session')
             return redirect(url_for('.rcon_auth'))
 
+    if match_action_form.is_submitted() and match_action_form.submit_list_players.data:
+        if rcon_session.execute('ListPlayers'):
+            rcon_session.add_session_cmd_result(token_session)
+        else:
+            flash('Connection failed to {}:{}'.format(rcon_session.ip_address, rcon_session.rcon_port))
+            token_session.pop('rcon_session')
+            return redirect(url_for('.rcon_auth'))
+
+    if match_action_form.is_submitted() and match_action_form.submit_list_bans.data:
+        if rcon_session.execute('ListBans'):
+            rcon_session.add_session_cmd_result(token_session)
+        else:
+            flash('Connection failed to {}:{}'.format(rcon_session.ip_address, rcon_session.rcon_port))
+            token_session.pop('rcon_session')
+            return redirect(url_for('.rcon_auth'))
+
     return render_template('rcon.html', rcom_cmd_line_form=rcom_cmd_line_form,
                            server_refresh_form=server_refresh_form, match_action_form=match_action_form,
                            session_data=token_session)
