@@ -30,3 +30,7 @@ class MatchActionButtons(FlaskForm):
     submit_kick_all_bots = SubmitField(u'Kick All Bots')
     submit_list_players = SubmitField(u'List Players')
     submit_list_bans = SubmitField(u'List Bans')
+
+
+class StatsForm(FlaskForm):
+    submit_query = SubmitField(u'Update Server Stats')

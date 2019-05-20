@@ -7,6 +7,45 @@ import json
 import secrets
 
 from valve.rcon import RCONError, RCON
+import valve.source
+import valve.source.a2s
+import valve.source.master_server
+
+
+class SteamServerData(object):
+    """ Data from the Master Query"""
+
+    def __init__(self):
+        self.total_public_servers = 0
+        self.total_slots = 0
+        self.total_players = 0
+        self.ignored_password_protected = 0
+        self.slot_usage = 0
+
+    def execute(self):
+        with valve.source.master_server.MasterServerQuerier() as msq:
+            try:
+                for address in msq.find(gamedir=u"WarFallen"):
+                    try:
+                        with valve.source.a2s.ServerQuerier(address) as server:
+                            info = server.info()
+
+                            if info['password_protected'] == 1:
+                                self.ignored_password_protected += 1
+                            else:
+                                self.total_slots += info['max_players']
+                                self.total_players += info['player_count']
+                                self.total_public_servers += 1
+
+                    except valve.source.NoResponseError:
+                        # print("Server {}:{} timed out!".format(*address))
+                        continue
+
+            except valve.source.NoResponseError:
+                pass
+                # print("Master server request timed out!")
+
+            self.slot_usage = "{:.0%}".format(self.total_players / self.total_slots)
 
 
 class RconSession(object):

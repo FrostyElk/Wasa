@@ -7,8 +7,8 @@ import json
 
 from flask import Blueprint, render_template, flash, redirect, url_for, session, request
 
-from .connection import RconSession
-from .forms import RconAuthForm, RconCmdInput, RefreshServerInfo, MatchActionButtons
+from .connection import RconSession, SteamServerData
+from .forms import RconAuthForm, RconCmdInput, RefreshServerInfo, MatchActionButtons, StatsForm
 
 frontend = Blueprint('frontend', __name__)
 
@@ -130,3 +130,15 @@ def rcon_auth():
             flash('Connection failed to {}:{}'.format(form.ip_address.data, form.rcon_port.data))
 
     return render_template('rcon-auth.html', form=form)
+
+
+@frontend.route('/stats/', methods=('GET', 'POST'))
+def stats():
+    stats_form = StatsForm()
+
+    steam_server_data = SteamServerData()
+
+    if stats_form.is_submitted() and stats_form.submit_query:
+        steam_server_data.execute()
+
+    return render_template('stats.html', stats_form=stats_form, stats_data=steam_server_data)

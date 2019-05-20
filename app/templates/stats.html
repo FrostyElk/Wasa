@@ -1,0 +1,47 @@
+{%- extends "base.html" %}
+
+<div class="container-fluid">
+    {%- with messages = get_flashed_messages(with_categories=True) %}
+        {%- if messages %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-danger" role="alert">
+                        {{ utils.flashed_messages(messages) }}
+                    </div>
+                </div>
+            </div>
+        {%- endif %}
+    {%- endwith %}
+
+    {% block content %}
+
+        <div class="row">
+            <div class="col-sm-12">
+
+                <div class="card">
+                    <div class="card-header bg-info"><b>Global Server Stats for WarFallen</b></div>
+
+                    <div class="card-body">
+                        Global Slot Usage: {{ stats_data.slot_usage }} <br><br>
+                        Used Public Slots: {{ stats_data.total_players }} <br>
+                        Total Available Public Slots: {{ stats_data.total_slots }} <br><br>
+                        Public Servers: {{ stats_data.total_public_servers }} <br>
+                        Ignored PW Protected Servers: {{ stats_data.ignored_password_protected }} <br>
+                    </div>
+
+                    <div class="card-footer">
+                        <form method="post">
+                            {{ stats_form.hidden_tag() }}
+                            {{ stats_form.submit_query(class="btn btn-info") }}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+    {%- endblock %}
+
+
+</div>
+
